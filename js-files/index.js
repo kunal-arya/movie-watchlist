@@ -9,12 +9,12 @@ const startText = document.querySelector(".start-text");
 
 async function searchBtnClickHandler() {
     const movieSearch = inputText.value;
-    const response = await fetch(`http://www.omdbapi.com/?apikey=6951e4d&s="${movieSearch}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&s="${movieSearch}`);
     const data = await response.json();
 
 
     // To clear the starting text of movieList and movieList
-    startText.classList.add("start-hide");
+    startText.classList.add("start-hide");  
     startText.innerHTML = "";
     movieList.innerHTML = "";
 
@@ -26,7 +26,7 @@ async function searchBtnClickHandler() {
 
         // If movie is found
         for(let details of data.Search) {
-            const response = await fetch(`http://www.omdbapi.com/?apikey=6951e4d&i=${details.imdbID}&page=1-4`);
+            const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&i=${details.imdbID}&page=1-4`);
             const movie = await response.json();
             movieList.innerHTML += 
                     `<div class="movie-card">
