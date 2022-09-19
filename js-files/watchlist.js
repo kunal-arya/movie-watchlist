@@ -31,7 +31,16 @@ function showMovies() {
     let movieArr = JSON.parse(movies);
     
     // if movies Array is blank
-    if(movieArr === []) {
+    if(!movieArr) {
+        movieLists.innerHTML = `
+        <div class="container">
+            <p>Your watchlist is looking a little empty...</p>
+        </div>
+        <a href="./index.html"class="watchlist-icon add-movies-link">
+            <img src="./icons/plus.svg" alt="plus icon"> 
+            <p>Let's add some movies!</p>
+        </a>
+        `
         return;
     }
 
@@ -58,14 +67,5 @@ function showMovies() {
     }
 
     console.log(html);
-    
-    if(html === "") {
-        movieLists.innerHTML = `
-        <div class="container">
-            <p>Your watchlist is looking a little empty...</p>
-        </div>
-        `
-    } else {
-        movieLists.innerHTML = html;
-    }
+    movieLists.innerHTML = html;
 }

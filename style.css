@@ -269,3 +269,17 @@ input[type="text"] {
         font-size: 0.75rem;
     }
    }
+
+
+/* ================
+    Watchlist Page
+   ================ */
+
+.add-movies-link {
+    font-size: 16px;
+}
+
+.add-movies-link > img {
+    width: 16px;
+    height: 16px;
+}
