@@ -6,12 +6,21 @@ const inputText = document.querySelector(`input[type="text"]`);
 const searchBtn = document.querySelector(`.search-btn`);
 const movieList = document.querySelector("#movie-lists");
 const startText = document.querySelector(".start-text");
+let movieArr;
 
 async function searchBtnClickHandler() {
-    const movieSearch = inputText.value;
+    const movieSearch = inputText.value.toLowerCase();
+    
+    // If someone press search without writing anything
+    if(movieSearch === "") {
+        return;
+    }
+
+
     const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&s="${movieSearch}`);
     const data = await response.json();
 
+    console.log(data.Search.length);
 
     // To clear the starting text of movieList and movieList
     startText.classList.add("start-hide");  
@@ -37,13 +46,78 @@ async function searchBtnClickHandler() {
                         </div>
                         <p class="length">${movie.Runtime}</p>
                         <p class="genre">${movie.Genre}</p>
-                        <button class="watchlist-icon">
-                            <img src="./icons/plus.svg" alt= "plus icon"> <p>Watchlist</p>
-                        </button>
+                       <div class="watchList-btns" id="">
+                            <button onclick="watchListClickHandler(this.classList)" class="${details.imdbID} watchlist-icon ">
+                                <img src="./icons/plus.svg" alt="plus icon"> <p>Watchlist</p>
+                            </button>
+                            <button onclick="RemoveClickHandler(this.classList)" class=" ${details.imdbID} watchlist-icon watchlist-hide">
+                                <img src="./icons/minus.svg" alt="minus icon"> <p>Remove</p>
+                            </button>
+                        </div>
                         <p class="plot"> ${movie.Plot} </p>
                     </div>`
         }
     }
+}
+
+async function watchListClickHandler(id) {
+    const movieId = id[0];
+    const watchList = document.querySelectorAll(`.${movieId}`)[0];
+    const remove = document.querySelectorAll(`.${movieId}`)[1];
+    watchList.classList.add("watchlist-hide");
+    remove.classList.remove("watchlist-hide");
+
+    const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&i=${movieId}&page=1-4`);
+    const movie = await response.json();
+
+    let localMovie = localStorage.getItem("movie");
+
+    if(localMovie == null) {
+        movieArr = [];
+    } else {
+        movieArr = JSON.parse(localMovie);
+    }
+
+    movieArr.push(movie);
+
+    localStorage.setItem("movie",JSON.stringify(movieArr));
+
+    console.log(movieArr);
+}
+
+async function RemoveClickHandler(id) {
+    const movieId = id[0];
+    const watchList = document.querySelectorAll(`.${movieId}`)[0];
+    const remove = document.querySelectorAll(`.${movieId}`)[1];
+    watchList.classList.remove("watchlist-hide");
+    remove.classList.add("watchlist-hide");
+
+    const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&i=${movieId}&page=1-4`);
+    const movie = await response.json();
+
+    let localMovie = localStorage.getItem("movie");
+
+    movieArr = JSON.parse(localMovie);
+
+    // IF movieArr is empty
+    if(!movieArr) {
+        return;
+    }
+
+    let removeIndex;
+
+    for(let i = 0; i < movieArr.length; i++ ) {
+        if(movieArr[i].imdbID == movieId) {
+            removeIndex = i;
+            break;
+        }
+    }
+
+    movieArr.splice(removeIndex,1);
+
+    localStorage.setItem("movie",JSON.stringify(movieArr));
+
+    console.log(movieArr);
 }
 
 searchBtn.addEventListener("click", searchBtnClickHandler);

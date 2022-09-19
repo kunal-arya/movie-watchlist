@@ -208,8 +208,13 @@ input[type="text"] {
     grid-area: genre;
    }
 
-   .watchlist-icon {
+   .watchList-btns {
     grid-area: watchlist;
+    display: flex;
+    
+   }
+
+   .watchlist-icon {
     text-decoration: none;
     background: none;
     border: none;
@@ -220,6 +225,11 @@ input[type="text"] {
     padding: 0;
     margin: 0;
     cursor: pointer;
+    transition: all 250ms;
+   }
+
+   .watchlist-hide {
+    display: none;
    }
 
    .watchlist-icon > img {
