@@ -2,10 +2,12 @@
     box-sizing: border-box;
 }
 
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     background-color: #121212;
+    padding: 0;
 }
 
 img {
@@ -147,6 +149,7 @@ input[type="text"] {
    .movies-show .start-text {
     margin-top: 20vh;
     text-align: center;
+    margin-bottom: 5vh;
    }
 
    .start-hide {
@@ -282,4 +285,25 @@ input[type="text"] {
 .add-movies-link > img {
     width: 20px;
     height: 20px;
+}
+
+
+
+/* ==================
+    Footer
+   ================== */
+
+   .footer {
+    background-color: rgba(0,0,0, 0.3);
+    text-align: center;
+    padding: 0.5em;
+    color: #fff;
+    margin-top: 2em;
+}
+
+.footer a:hover,
+.footer a:focus {
+    background-color: #E07400;
+    padding: 0.5em;
+    border-radius: 5px;
 }
