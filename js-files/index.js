@@ -20,12 +20,13 @@ async function searchBtnClickHandler() {
     const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&s="${movieSearch}`);
     const data = await response.json();
 
-    console.log(data.Search.length);
-
     // To clear the starting text of movieList and movieList
     startText.classList.add("start-hide");  
     startText.innerHTML = "";
     movieList.innerHTML = "";
+
+    const watchlistMovies = JSON.parse(localStorage.getItem("movie"));
+    console.log(watchlistMovies);
 
     // if movie don't found
     if(data.Response == "False") {
@@ -37,25 +38,59 @@ async function searchBtnClickHandler() {
         for(let details of data.Search) {
             const response = await fetch(`https://www.omdbapi.com/?apikey=6951e4d&i=${details.imdbID}&page=1-4`);
             const movie = await response.json();
-            movieList.innerHTML += 
-                    `<div class="movie-card">
-                        <img class="movie-image" src="${movie.Poster}">
-                        <div class="movie-head">
-                            <h3 class="title">${movie.Title}</h3>
-                            <p class="stars">⭐${movie.imdbRating}</p>
-                        </div>
-                        <p class="length">${movie.Runtime}</p>
-                        <p class="genre">${movie.Genre}</p>
-                       <div class="watchList-btns" id="">
-                            <button onclick="watchListClickHandler(this.classList)" class="${details.imdbID} watchlist-icon ">
-                                <img src="./icons/plus.svg" alt="plus icon"> <p>Watchlist</p>
-                            </button>
-                            <button onclick="RemoveClickHandler(this.classList)" class=" ${details.imdbID} watchlist-icon watchlist-hide">
-                                <img src="./icons/minus.svg" alt="minus icon"> <p>Remove</p>
-                            </button>
-                        </div>
-                        <p class="plot"> ${movie.Plot} </p>
-                    </div>`
+
+            let inWatchlist = false;
+
+            watchlistMovies.forEach(movie => {
+                if(movie.imdbID == details.imdbID) {
+                    inWatchlist = true;
+                    return;
+                }
+            })
+
+            if(!inWatchlist) {
+                movieList.innerHTML += 
+                `<div class="movie-card">
+                    <img class="movie-image" src="${movie.Poster}">
+                    <div class="movie-head">
+                        <h3 class="title">${movie.Title}</h3>
+                        <p class="stars">⭐${movie.imdbRating}</p>
+                    </div>
+                    <p class="length">${movie.Runtime}</p>
+                    <p class="genre">${movie.Genre}</p>
+                   <div class="watchList-btns" id="">
+                        <button onclick="watchListClickHandler(this.classList)" class="${details.imdbID} watchlist-icon ">
+                            <img src="./icons/plus.svg" alt="plus icon"> <p>Watchlist</p>
+                        </button>
+                        <button onclick="RemoveClickHandler(this.classList)" class=" ${details.imdbID} watchlist-icon watchlist-hide">
+                            <img src="./icons/minus.svg" alt="minus icon"> <p>Remove</p>
+                        </button>
+                    </div>
+                    <p class="plot"> ${movie.Plot} </p>
+                </div>`
+            } else {
+                movieList.innerHTML += 
+                `<div class="movie-card">
+                    <img class="movie-image" src="${movie.Poster}">
+                    <div class="movie-head">
+                        <h3 class="title">${movie.Title}</h3>
+                        <p class="stars">⭐${movie.imdbRating}</p>
+                    </div>
+                    <p class="length">${movie.Runtime}</p>
+                    <p class="genre">${movie.Genre}</p>
+                   <div class="watchList-btns" id="">
+                        <button onclick="watchListClickHandler(this.classList)" class="${details.imdbID} watchlist-icon watchlist-hide">
+                            <img src="./icons/plus.svg" alt="plus icon"> <p>Watchlist</p>
+                        </button>
+                        <button onclick="RemoveClickHandler(this.classList)" class=" ${details.imdbID} watchlist-icon ">
+                            <img src="./icons/minus.svg" alt="minus icon"> <p>Remove</p>
+                        </button>
+                    </div>
+                    <p class="plot"> ${movie.Plot} </p>
+                </div>`
+            }
+
+
         }
     }
 }
@@ -81,8 +116,6 @@ async function watchListClickHandler(id) {
     movieArr.push(movie);
 
     localStorage.setItem("movie",JSON.stringify(movieArr));
-
-    console.log(movieArr);
 }
 
 async function RemoveClickHandler(id) {
@@ -116,8 +149,6 @@ async function RemoveClickHandler(id) {
     movieArr.splice(removeIndex,1);
 
     localStorage.setItem("movie",JSON.stringify(movieArr));
-
-    console.log(movieArr);
 }
 
 searchBtn.addEventListener("click", searchBtnClickHandler);
