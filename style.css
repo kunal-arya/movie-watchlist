@@ -276,10 +276,10 @@ input[type="text"] {
    ================ */
 
 .add-movies-link {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .add-movies-link > img {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
 }

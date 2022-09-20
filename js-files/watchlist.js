@@ -29,9 +29,9 @@ function RemoveClickHandler(id) {
 function showMovies() {
     let movies= localStorage.getItem("movie");
     let movieArr = JSON.parse(movies);
-    
+
     // if movies Array is blank
-    if(!movieArr) {
+    if(movieArr.length == 0) {
         movieLists.innerHTML = `
         <div class="container">
             <p>Your watchlist is looking a little empty...</p>
@@ -65,7 +65,5 @@ function showMovies() {
             <p class="plot"> ${movie.Plot} </p>
         </div>`
     }
-
-    console.log(html);
     movieLists.innerHTML = html;
 }
