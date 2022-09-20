@@ -41,12 +41,15 @@ async function searchBtnClickHandler() {
 
             let inWatchlist = false;
 
-            watchlistMovies.forEach(movie => {
-                if(movie.imdbID == details.imdbID) {
-                    inWatchlist = true;
-                    return;
-                }
-            })
+            // only if watchlistMovies is a truthy
+            if(watchlistMovies) {
+                watchlistMovies.forEach(movie => {
+                    if(movie.imdbID == details.imdbID) {
+                        inWatchlist = true;
+                        return;
+                    }
+                })
+            }
 
             if(!inWatchlist) {
                 movieList.innerHTML += 
